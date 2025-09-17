@@ -11,16 +11,15 @@ This project is a valuable resource for anyone who wants to gain a deeper unders
 - [The 5G System: Core Concepts](#the-5g-system-core-concepts)
 - [5G System Deployment Options](#5g-system-deployment-options)
 - [RAN Protocol Stack](#ran-protocol-stack)
- 
-
-
-
-
-
-
-
-
-
+- [Service Data Adaptation Protocol (SDAP)](#service-data-adaptation-protocol-sdap)
+- [Packet Data Convergence Protocol (PDCP)](#packet-data-convergence-protocol-pdcp)
+- [Radio Link Control (RLC)](#radio-link-control-rlc)
+- [Medium Access Control (MAC)](#medium-access-control-mac)
+- [The MAC Scheduler](#the-mac-scheduler)
+- [Physical Layer (PHY)](#physical-layer-phy)
+- [ Physical Layer Structure](physical-layer-structure)
+- [RRC and NAS](#rrc-and-nas)
+- [RRC States and Mobility](#rrc-states-and-mobility)
 
 # The 5G System
 - ### Global Standardization Effort:
