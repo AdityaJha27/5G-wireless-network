@@ -1,4 +1,27 @@
-# 5G-wireless-network
+# 5G-wireless-network: Architecture, Functions & Call Flows
+This repository offers a comprehensive and organized study of the complex world of 5G wireless networks. The project's goal is to simplify the core principles of the 5G System Architecture, its key Network Functions, and the essential data exchanges (call flows) that occur between them.
+
+Here you will find detailed notes on the relationship and operational procedures between the Radio Access Network (RAN) and the Core Network. This includes an in-depth analysis of the roles of major functions like AMF, SMF, UDM, UPF, PCF, and an explanation of their respective protocol stacks.
+
+This project is a valuable resource for anyone who wants to gain a deeper understanding of the technical aspects of 5G, whether you are a student, an engineer, or simply curious about this transformative technology.
+
+## Table of Contents
+- [The 5G System](#the-5g-system)
+- [The Three Main 5G Use Cases](#the-three-main-5g-use-cases)
+- [The 5G System: Core Concepts](#the-5g-system-core-concepts)
+- [5G System Deployment Options](#5g-system-deployment-options)
+- [RAN Protocol Stack](#ran-protocol-stack)
+ 
+
+
+
+
+
+
+
+
+
+
 # The 5G System
 - ### Global Standardization Effort:
   it's a global standard developed through an international effort. The International Telecommunication Union (ITU) led this initiative with a vision to "connect all the world's people".
@@ -87,7 +110,7 @@ URLLC is for applications where every millisecond and every connection counts. I
 - ### Examples:
    Traffic safety and control, remote surgery and manufacturing, and industrial automation.
 
-# The 5G System: 
+# The 5G System: Core Concepts
 Core Concepts The 5G system is fundamentally divided into two main parts: 
 
 <img width="1348" height="665" alt="Screenshot (314)" src="https://github.com/user-attachments/assets/27ad9e88-a7d6-4aea-a7d8-38db769fbd5a" />
@@ -156,6 +179,9 @@ The RAN Protocol Stack is divided into two main parts:
 
 the User Plane and the Control Plane. Each plane has a specific set of layers that handle different tasks, from transmitting data to managing the connection.
 
+<img width="1351" height="627" alt="Screenshot (343)" src="https://github.com/user-attachments/assets/b91b1a6f-d958-47f0-9b88-1aabb9368cef" />
+
+
 ### 1. User Plane Protocol Stack
 This stack is responsible for carrying user data from the device (UE) to the core network. The main layers from top to bottom are:
 
@@ -181,15 +207,24 @@ This stack is used for signaling and managing the connection between the user de
 # Service Data Adaptation Protocol (SDAP)
 The SDAP layer is a crucial part of the 5G User Plane Protocol Stack. Its main purpose is to manage diverse traffic types and ensure that each one receives the correct Quality of Service (QoS).
 
+<img width="1105" height="458" alt="Screenshot (353)" src="https://github.com/user-attachments/assets/38224519-b683-4ac1-8cdf-071c08c4cc2e" />
+
+
 It acts like a traffic manager, directing data flows to the appropriate paths.
 
 #### Key Functions
 - <h6>QoS Flow Mapping:</h6> SDAP's primary function is to map incoming data flows to specific radio bearers.This ensures that different types of data, like a voice call versus a background download, are handled correctly according to their unique performance needs.
 
+<img width="1139" height="593" alt="Screenshot (354)" src="https://github.com/user-attachments/assets/f5780dfe-f380-4df9-9175-8d34dabca170" />
+
+
 - <h6>QoS Flow Identifier (QFI):</h6> Each data flow is identified by a QoS Flow Identifier (QFI). This allows the network to distinguish between different types of traffic and apply the correct QoS policies to each one.
 
 ### Types of QoS Flows
-The PDF outlines different types of QoS flows, each defined by a 5QI (5G QoS Identifier).
+The outlines different types of QoS flows, each defined by a 5QI (5G QoS Identifier).
+
+<img width="976" height="553" alt="Screenshot (357)" src="https://github.com/user-attachments/assets/df22a241-8ec2-4dfb-a7cb-721a4f901f83" />
+
 
 - <h6>GBR (Guaranteed Bit Rate):</h6> This is for services that need a guaranteed data rate, like voice calls or real-time video streaming. These services are more sensitive to delays and require consistent performance.
 
@@ -206,18 +241,32 @@ The PDCP layer sits in the middle of the RAN protocol stack. Its primary role is
 
   This is especially useful for applications like Voice over IP (VoIP), where the header can be much larger than the actual voice payload. By compressing the header, the network becomes more efficient.
 
+  <img width="1400" height="809" alt="Screenshot (361)" src="https://github.com/user-attachments/assets/200eee80-4acb-476e-bf12-6946868dc74f" />
+
+
 - <h6>Ciphering and Integrity Protection:</h6> This is a core security function of the PDCP layer. It uses encryption to prevent eavesdropping and integrity protection to ensure that the data hasn't been tampered with. 
 
   The PDCP layer applies these security measures to both user data and control signaling.
 
+  <img width="1382" height="581" alt="Screenshot (362)" src="https://github.com/user-attachments/assets/de6dbbfd-370e-42f5-9416-f74565ca5c34" />
+
+
 - <h6>In-sequence Delivery:</h6> PDCP ensures that data packets are delivered to the higher layers in the correct order. If packets arrive out of order from the lower layers, PDCP reorders them before passing them up.
 
+<img width="1237" height="626" alt="Screenshot (364)" src="https://github.com/user-attachments/assets/c4b212b3-aa40-4c4e-8f66-282d6490b437" />
+
 - <h6>Routing and Duplication:</h6> PDCP can intelligently route data. For example, in a "split bearer" scenario, the PDCP layer can duplicate packets and send them over multiple radio links to ensure higher reliability.
+
+<img width="1379" height="663" alt="Screenshot (363)" src="https://github.com/user-attachments/assets/836b3804-5fee-41a1-871e-eef346df428d" />
+
 
 # Radio Link Control (RLC)
 The RLC layer is a key part of the 5G RAN protocol stack, sitting between the PDCP and MAC layers. Its main responsibility is to ensure the efficient and reliable delivery of data packets.
 
 It does this by using different operational modes, each suited for a specific type of data traffic.
+
+<img width="1358" height="680" alt="Screenshot (365)" src="https://github.com/user-attachments/assets/c3d26da1-9d27-4e1b-879f-1b0847fe5920" />
+
 
 ### RLC Modes
 The RLC layer operates in three different modes, each with unique capabilities:
@@ -235,17 +284,29 @@ The RLC layer operates in three different modes, each with unique capabilities:
 # Medium Access Control (MAC)
 The MAC layer sits just below the RLC layer and is responsible for managing the radio channel efficiently. Its main job is to coordinate the flow of data from various sources and ensure everything is scheduled correctly.
 
+<img width="1326" height="646" alt="Screenshot (376)" src="https://github.com/user-attachments/assets/87919fb5-b162-44b6-a781-6cca72b23381" />
+
+
 #### Key Functions
 - <h6>Multiplexing and De-multiplexing:</h6> This is a core function of the MAC layer. It takes data from different Logical Channels (like those for voice, video, or signaling) and combines them into a single data block for the lower layers. At the receiving end, it does the reverse, separating the data and sending it to the correct RLC layer.
+
+<img width="865" height="429" alt="Screenshot (378)" src="https://github.com/user-attachments/assets/508fdbfd-418a-485f-a01b-9103d5f9157b" />
+
 
 - <h6>Scheduling:</h6> The MAC layer is responsible for scheduling all data transmissions. It decides which devices get to transmit and receive data, when they can do it, and how much data they can send. This is a crucial function for optimizing network performance and ensuring a fair distribution of resources.
 
 - <h6>Hybrid ARQ (HARQ):</h6> This is a mechanism for retransmissions. Unlike the RLC layer's retransmissions, HARQ works very quickly at the physical layer. It combines a retransmitted data packet with the original packet to increase the chances of a successful decode. This makes the system more robust and reliable. In 5G, asynchronous HARQ is used, which means it can handle retransmissions for multiple data streams at the same time, without waiting for one to finish.
 
-- <h6>Logical vs. Transport Channels:</h6> The PDF also shows how the MAC layer connects Logical Channels (which define the type of information, e.g., traffic or control) to Transport Channels (which define how the data is sent over the radio link, e.g., a broadcast or shared channel). The MAC layer handles this mapping.
+<img width="1295" height="534" alt="Screenshot (380)" src="https://github.com/user-attachments/assets/ed6d1d2a-6199-454f-bb32-a34b15594ec1" />
+
+
+- <h6>Logical vs. Transport Channels:</h6> This shows how the MAC layer connects Logical Channels (which define the type of information, e.g., traffic or control) to Transport Channels (which define how the data is sent over the radio link, e.g., a broadcast or shared channel). The MAC layer handles this mapping.
 
 # The MAC Scheduler
 The MAC scheduler is like the traffic cop of the 5G network. Its job is to efficiently manage and distribute the limited radio resources (like frequency and time slots) among many users. It works by taking in various inputs and making smart decisions to ensure the network runs smoothly.
+
+<img width="1183" height="595" alt="Screenshot (383)" src="https://github.com/user-attachments/assets/8fdd106b-ac6f-4f9e-bb51-a91f2d38a122" />
+
 
 #### Key Functions
 -  <h6>Resource Allocation:</h6> The scheduler decides which user gets to transmit or receive data, where on the frequency band this happens, and for how long. It's constantly making decisions to assign resources based on the current network conditions and what each user needs.
@@ -262,6 +323,9 @@ The MAC scheduler is like the traffic cop of the 5G network. Its job is to effic
 
 # Physical Layer (PHY)
 The Physical (PHY) layer is the most fundamental layer of the 5G protocol stack. It is responsible for the actual radio communication, taking the data from the MAC layer and converting it into a signal that can be transmitted wirelessly. The PHY layer is the core of how the network connects a device to the gNodeB.
+
+<img width="1203" height="533" alt="Screenshot (393)" src="https://github.com/user-attachments/assets/7d6feac4-679d-4929-a369-47ef3aa5b08c" />
+
 
 #### Key Functions
 - <h6>Transport Channels to Physical Channels:</h6> The PHY layer is the bridge between the Transport Channels (which define how data is delivered) and the Physical Channels (which are the actual radio resources used for transmission). For example, the Downlink Shared Channel (DL-SCH) is mapped to the Physical Downlink Shared Channel (PDSCH).
@@ -280,6 +344,9 @@ The Physical Layer is where the actual radio communication happens. This explain
 ### 1. Orthogonal Frequency Division Multiplexing (OFDM)
 OFDM is the core modulation scheme used in 5G. It's a method for transmitting a wideband signal by breaking it down into many smaller, overlapping, narrow-band signals called subcarriers.
 
+<img width="1267" height="535" alt="Screenshot (408)" src="https://github.com/user-attachments/assets/f230fd2a-4ffa-496a-a341-d7d5736158f6" />
+
+
 - <h6>Why it's used:</h6> A major challenge in wireless communication is Intersymbol Interference (ISI), which happens when a signal's reflections from obstacles arrive at different times, corrupting the main signal. OFDM helps combat this by using a Cyclic Prefix.
 
 - <h6>Cyclic Prefix:</h6> This is a copy of the end of an OFDM symbol that is pasted at the beginning. It acts as a guard interval, helping the receiver to handle reflections and avoid ISI.
@@ -294,6 +361,8 @@ OFDM is the core modulation scheme used in 5G. It's a method for transmitting a 
 ### 3. Flexible Numerology and Time Domain Structure
 5G uses a concept called Flexible Numerology, which means it can adjust parameters like Subcarrier Spacing (SCS).
 
+<img width="1257" height="601" alt="Screenshot (411)" src="https://github.com/user-attachments/assets/9ceab89f-32f8-4cf6-97b7-b3fca4b17961" />
+
 - A larger SCS makes the system more robust against frequency errors  and is used for services requiring very low latency.
 
 - The time domain structure in 5G is also flexible. It is organized into a 10ms radio frame, which is divided into subframes. Each subframe is made up of slots, and the duration of a slot changes depending on the subcarrier spacing. This allows the network to adapt to different traffic needs.
@@ -307,6 +376,8 @@ The fundamental unit of radio resource in 5G is the Resource Element.
 
 # RRC and NAS
 These two layers are at the top of the control plane protocol stack. They work together to manage a user device's connection to the 5G network.
+
+<img width="1339" height="638" alt="Screenshot (416)" src="https://github.com/user-attachments/assets/3f798318-8f1a-4ed0-9440-c39b6e1de935" />
 
 - <h6>NAS (Non-Access Stratum):</h6> This layer acts as the bridge between the device (UE) and the core network's AMF (Access and Mobility Function). It handles high-level functions that aren't specific to the radio connection, such as:
 
@@ -328,6 +399,9 @@ These two layers are at the top of the control plane protocol stack. They work t
 
 # RRC States and Mobility
 The RRC layer defines the three main states a device can be in, which determine how the network manages its connection and mobility.
+
+<img width="1342" height="594" alt="Screenshot (418)" src="https://github.com/user-attachments/assets/2b050e96-3535-40f1-a7f1-21efb53e4e6e" />
+
 
 - <h6>RRC Idle State:</h6> When a device is powered on but not actively connected to the network, it is in this state. It is Deregistered with the network and has no RRC connection context stored at the gNodeB. Mobility in this state is controlled by the device itself , which tracks Tracking Areas (TAs) defined in the core network.
 
