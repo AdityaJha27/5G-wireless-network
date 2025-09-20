@@ -409,6 +409,173 @@ The RRC layer defines the three main states a device can be in, which determine 
 - <h6>RRC Inactive State:</h6> This is a new state in 5G that provides a middle ground between Idle and Connected. The device and the RAN store a "radio configuration and security" context , allowing for a very fast return to the Connected state when needed. The device's mobility in this state is controlled by the device, similar to the Idle state.
 
 
+# Initial Access
+Initial access is the procedure by which a user device (UE) finds a 5G cell, synchronizes with it, and gets the essential information needed to connect to the network. This process is a crucial prerequisite for any data or signaling exchange.
+
+#### Key Steps
+### 1.Cell Search:
+The UE first scans for Synchronization Signal Blocks (SSBs) from nearby cells. The SSB is a combination of two signals and one channel:
+
+- <h6>PSS (Primary Synchronization Signal):</h6> Helps the device get coarse time and frequency synchronization and determines the cell's Physical Cell ID (PCI) Group.
+
+- <h6>SSS (Secondary Synchronization Signal):</h6> Provides fine-tuned synchronization and helps determine the PCI within the group.
+
+- <h6>PBCH (Physical Broadcast Channel):</h6> Carries the Master Information Block (MIB), which contains critical system information needed to decode other network broadcasts.
+
+### 2.Decode System Information:
+After synchronizing, the device decodes the broadcasted information. The MIB points to the location of the SIB1 (System Information Block 1).
+
+- <h6>SIB1:</h6> This block contains information about cell selection and access, including a list of neighboring cells, and schedules for other SIBs.
+
+- <h6>Other SIBs:</h6> The network can also broadcast other SIBs (like SIB2-9) that provide additional information, such as cell re-selection parameters or public warnings. These can be transmitted periodically or on-demand.
+
+### 3.Random Access Procedure:
+Once the device has the necessary system information, it begins the Random Access procedure to establish a connection. There are two main types of random access:
+
+- <h6>Contention-Based Random Access (CBRA):</h6> This is a four-step process where multiple devices may try to access the network at the same time, which can lead to collisions. The procedure includes the device sending a Random Access Preamble, receiving a Random Access Response (RAR) from the gNodeB, and then a Contention Resolution step to resolve any conflicts.
+
+- <h6>Contention-Free Random Access (CFRA):</h6> This is a two-step process used when a dedicated preamble is assigned to a single device (e.g., during a handover), eliminating the risk of a collision.
+
+
+# Random Access Procedure
+The Random Access procedure is the method a device uses to establish a connection with the network. It is triggered by several events, such as when a device has uplink data to send, when it needs to re-sync with the network, or during a handover. The procedure can be either contention-based or contention-free.
+
+## Contention-Based Random Access (CBRA)
+This is the standard, four-step process used when a device does not have a dedicated preamble from the network. There's a chance that two or more devices might try to access the network at the same time, which can cause a "contention" or collision.
+
+<h6>Step 1: Random Access Preamble (PRACH):</h6> The device sends a random preamble to the gNodeB. This is like a "Hello, I want to connect" message. The gNodeB uses this to estimate the timing and power of the device.
+
+<h6>Step 2: Random Access Response (RAR):</h6> The gNodeB hears the preamble and sends back a response. This response includes:
+
+- A Timing Advance Command to correct the device's timing.
+
+- A Temporary Cell-Radio Network Temporary Identifier (TC-RNTI), which is a temporary ID for the device.
+
+- An Uplink Scheduling Grant that tells the device where and when it can send its next message.
+
+<h6>Step 3: Scheduled Transmission (Msg3):</h6> Using the uplink grant from the previous step, the device sends its RRC Connection Setup Request message. This message also contains a unique identifier (UE Contention Resolution Identity) to resolve any potential collisions.
+
+<h6>Step 4: Contention Resolution (Msg4):</h6> The gNodeB broadcasts a message that includes the unique identifier from Step 3. All devices that participated in the random access listen. The device whose ID matches is now officially connected, and its TC-RNTI is promoted to a permanent C-RNTI. Other devices that were in a collision receive no response and must restart the process.
+
+## Contention-Free Random Access (CFRA)
+This is a simpler, two-step process used to avoid collisions. The network explicitly assigns a dedicated random access preamble to a device, which guarantees that only that device will use it. This is typically used during handovers or for specific services.
+
+# 5G Core Network Identifiers
+In a 5G network, there are various types of identifiers, which can be divided into two main categories: Device Identity and Subscription Identity.
+
+## 1. Permanent Equipment Identifier (PEI)
+- This is a permanent ID for each User Equipment (UE) or device.
+
+- It can be sent in the network as the International Mobile station Equipment Identity (IMEI) or International Mobile station Equipment Identity and Software Version Number (IMEISV).
+
+- The IMEISV is a 16-digit number that includes the Type Allocation Code (TAC), Serial Number (SNR), and Software Version Number (SVN).
+
+## 2. Subscription Permanent Identity (SUPI)
+This is a permanent ID for a user's subscription.An example of this is the International Mobile Subscriber Identity (IMSI).
+
+The IMSI can be 15 or 16 digits long and has three parts:
+
+- Mobile Country Code (MCC): 3 digits.
+
+- Mobile Network Code (MNC): 2 or 3 digits.
+
+- Mobile Subscriber Identification Number (MSIN): Up to 10 digits.
+
+The SUPI can also be represented as a Network Access Identifier (NAI), which is in the username@realm format.
+
+## 3. Subscription Concealed Identity (SUCI)
+The SUCI is a temporary ID used to protect the SUPI when it's being sent in the network.
+
+- Its main purpose is to prevent security issues like IMSI Catching.
+
+- When the SUPI is transmitted in the network, the SUCI is used to conceal its original form.
+
+## 4. Globally Unique Temporary Identifier (GUTI)
+The GUTI is a temporary ID that the network assigns to the user's device.Its purpose is to enhance security and prevent permanent IDs like the SUPI or SUCI from being sent over the network unnecessarily.
+
+The GUTI is divided into two parts:
+
+- Globally Unique AMF ID (GUAMI): This includes the MCC, MNC, and AMF Region, AMF Set, and AMF Pointer.
+
+- 5G Temporary Mobile Subscriber Identity (5G-TMSI): This is a temporary ID given to the user.
+
+# Service-Based Architecture (SBA)
+Unlike the traditional "Reference Point" architecture of 4G, which used fixed interfaces between network elements, the 5G Core uses a Service-Based Architecture. In this model, each Network Function (NF) (like AMF, SMF, etc.) is a self-contained microservice that exposes its services to other NFs. This makes the network more flexible and scalable.
+
+#### Key Concepts
+- <h6>Network Functions (NFs):</h6> These are the individual components of the 5G Core. Instead of being physical boxes, they are software functions that can be deployed on a cloud platform.
+
+- <h6>Service Producers and Consumers:</h6> In SBA, one NF (Service Producer) offers a service that another NF (Service Consumer) can use. For example, the PCF (Policy Control Function) produces a service that the AMF (Access and Mobility Management Function) consumes.
+
+- <h6>Web-Based Interfaces:</h6> Communication between NFs happens over open, web-based APIs, primarily using HTTP/2. This is a major shift from the dedicated, complex protocols of 4G. The common HTTP methods like POST (to send information), PUT (to send/replace information), and DELETE (to remove information) are used.
+
+### How Service Discovery Works
+For this architecture to work, a Network Function needs to be able to find and communicate with the specific services it needs. This is handled by a central Network Function called the Network Repository Function (NRF).
+
+- <h6>1.Service Registration:</h6> When a Network Function (e.g., the AMF) comes online, it first registers itself with the NRF. It sends a message (HTTP PUT) to the NRF, providing details about its services. The NRF stores this information.
+
+- <h6>2.Service Discovery:</h6> When another Network Function (e.g., the SMF) needs a service, it doesn't need to know the address of the specific NF providing that service. Instead, it sends a query (HTTP GET) to the NRF.
+
+- <h6>3.Service Request:</h6> The NRF responds with a list of the NFs that can provide the requested service. The consuming NF can then send its request (HTTP POST) to one of those NFs to get the information it needs.
+
+# Access and Mobility Management Function (AMF)
+The Access and Mobility Management Function (AMF) is a critical Network Function within the 5G Core Network, responsible for the Control Plane. It handles the control signaling between your user equipment (UE), which is your phone, and the network.
+
+Its main functions are:
+### 1. Registration Management</h6>
+When a device connects to the 5G network for the first time, it has to complete a Registration Procedure.The AMF manages this procedure, which involves authenticating (identifying) and authorizing (granting access to) the device with the network. This process creates the user's context within the network.
+
+### 2. Connection Management
+The AMF establishes and releases the control plane signaling connections between the device and the core network. This connection is created through Radio Resource Control (RRC) and Non-Access Stratum (NAS) signaling.
+
+### 3. Mobility Management
+The AMF manages the location tracking and handover (moving from one cell to another) of connected devices. If a device moves from one cell to another, the AMF handles its mobility to ensure its data connection remains active.
+
+# Session Management Function (SMF)
+The Session Management Function (SMF) is a core network function in the 5G system. It is responsible for all aspects of PDU Session Management. The SMF controls the user plane function (UPF) and handles the signalling related to data sessions.
+
+#### Key Responsibilities of the SMF
+- <h6>PDU Session Establishment, Modification, and Release:</h6> The SMF sets up, changes, and tears down PDU Sessions. A PDU Session is a logical connection that provides data services (like internet access) between the user equipment (UE) and a Data Network (DN).
+
+- <h6>IP Address Allocation:</h6> The SMF is in charge of assigning an IP Address to the device (UE) for each PDU Session. It can allocate IPv4, IPv6, or dual-stack (both) addresses.
+
+- <h6>UPF Selection and Control:</h6> The SMF selects the appropriate User Plane Function (UPF) for the session and controls its data path.
+
+- <h6>Session Continuity Management:</h6> The SMF manages how a session remains active when a device moves. The document mentions Session Continuity Modes (SSC Modes):
+
+  -  SSC Mode 1: This is a "break-before-make" approach. When the device moves to a new location that requires a different anchor point, the old PDU Session is released, and a new one is set up with a new IP address.
+
+  -  SSC Mode 2: This is a "make-before-break" approach. A new PDU Session is established first with a new anchor point and a new IP address, and only then is the old session released. This minimizes service interruption.
+
+The SMF works closely with the AMF (Access and Mobility Management Function) to provide a complete service to the user. While the AMF handles connection and mobility on the control plane, the SMF manages the actual data sessions.
+
+# Unified Data Repository (UDR)
+The UDR is a database where various types of data are stored. It serves as a central repository for different types of information, including:
+
+Subscription Data: Information about the user's subscription.
+
+Policy Data: Data related to network policies.
+
+Structured Data for Exposure: Data that is made available to external applications.
+
+Application Data: Information related to specific applications.
+
+The design is described as cloud-native and stateless.
+
+# Unified Data Management (UDM)
+The UDM functions as the front-end for the user subscription data that is stored in the UDR. Its main responsibilities include:
+Supporting application logic.
+
+Managing access and registration.
+
+Handling authentication.
+
+In essence, the UDR stores the data, while the UDM provides the logic and services that access and manage that data.
+
+
+
+
+
 
 
 
