@@ -552,25 +552,69 @@ The SMF works closely with the AMF (Access and Mobility Management Function) to 
 # Unified Data Repository (UDR)
 The UDR is a database where various types of data are stored. It serves as a central repository for different types of information, including:
 
-Subscription Data: Information about the user's subscription.
+- <h6>Subscription Data:</h6> Information about the user's subscription.
 
-Policy Data: Data related to network policies.
+- <h6>Policy Data:</h6> Data related to network policies.
 
-Structured Data for Exposure: Data that is made available to external applications.
+- <h6>Structured Data for Exposure:</h6> Data that is made available to external applications.
 
-Application Data: Information related to specific applications.
+- <h6>Application Data:</h6> Information related to specific applications.
 
 The design is described as cloud-native and stateless.
 
 # Unified Data Management (UDM)
 The UDM functions as the front-end for the user subscription data that is stored in the UDR. Its main responsibilities include:
-Supporting application logic.
 
-Managing access and registration.
+- Supporting application logic.
 
-Handling authentication.
+- Managing access and registration.
+
+- Handling authentication.
 
 In essence, the UDR stores the data, while the UDM provides the logic and services that access and manage that data.
+
+# User Plane Function (UPF)
+The User Plane Function (UPF) is a core component of the 5G Core network. Its primary role is to handle all user data traffic, acting as a crucial bridge between your device (known as the UE, or User Equipment) and external networks like the internet.
+
+A key function of the UPF is to conceal your device's movement from these external networks. This ensures that even as you move and hand off between different cell towers, your connection remains stable and seamless
+
+#### Key Functions of the UPF
+- <h6>Connects to External Networks:</h6> The UPF connects the 5G network to external IP networks, such as the public internet.
+
+- <h6>Serves as an Anchor Point:</h6> It acts as the anchor for all of your device’s data sessions. This ensures continuous connectivity and a smooth user experience, even when you are mobile.
+
+- <h6>Handles Charging and Reporting:</h6> The UPF is responsible for generating data records and traffic usage reports, which are essential for billing purposes.
+
+- <h6>Manages Traffic Flow:</h6> It handles data buffering and applies Quality of Service (QoS) markings to manage and prioritize traffic, ensuring that different types of data (like voice calls versus a web page) are handled appropriately.
+
+The UPF uses the Packet Forwarding Control Protocol (PFCP) for session management. When a data packet arrives, the UPF performs a lookup using a Packet Detection Rule (PDR) to find the correct PFCP session. It then applies a set of instructions from several different rules:
+
+- Forwarding Action Rules (FAR) to determine where to send the packet.
+
+- Buffering Action Rules (BAR) if the packet needs to be temporarily held.
+
+- QoS Enforcement Rules (QER) to apply quality of service.
+
+- Usage Reporting Rules (URR) to track data usage.
+
+# Policy Control Function (PCF)
+The Policy Control Function (PCF) is a core component of the 5G network that sets and enforces rules for user behavior, data sessions, and network traffic. It acts as the central brain for policy decisions.
+
+#### Key Policy Types
+The PCF manages two main types of policies:
+
+- Non-session-related policies: These control a user's overall access and mobility. Examples include:
+
+  -  Service Area Restrictions: Limiting where a user can access the network.
+
+  -  UE Route Selection Policy (URSP): Guiding a device on which network slice or access technology (like Wi-Fi) to use.
+
+- Session-related policies: These are specific to a data session and include:
+
+  -  Gating Control: Allowing or blocking specific data packets.
+
+  -  QoS Control: Ensuring each data flow receives the right Quality of Service (QoS), like providing low latency for a video call.
+
 
 
 
