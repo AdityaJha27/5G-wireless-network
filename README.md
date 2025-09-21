@@ -20,6 +20,16 @@ This project is a valuable resource for anyone who wants to gain a deeper unders
 - [ Physical Layer Structure](physical-layer-structure)
 - [RRC and NAS](#rrc-and-nas)
 - [RRC States and Mobility](#rrc-states-and-mobility)
+- [Initial Access](#initial-access)
+- [Random Access Procedure](#random-access-procedure)
+- [5G Core Network Identifiers](#5g-core-network-identifiers)
+- [Service-Based Architecture (SBA)](#service-based-architecture-sba)
+- [Access and Mobility Management Function (AMF)](#access-and-mobility-management-function-amf)
+- [Session Management Function (SMF)](#session-management-function-smf)
+- [Unified Data Repository (UDR)](#unified-data-repository-udr)
+- [Unified Data Management (UDM)](#unified-data-management-udm)
+- [User Plane Function (UPF)](#user-plane-function-upf)
+- [Policy Control Function (PCF)](#policy-control-function-pcf)
 
 # The 5G System
 - ### Global Standardization Effort:
@@ -414,6 +424,9 @@ Initial access is the procedure by which a user device (UE) finds a 5G cell, syn
 
 #### Key Steps
 ### 1.Cell Search:
+
+<img width="1303" height="631" alt="Screenshot (503)" src="https://github.com/user-attachments/assets/05f13668-0461-456d-8f4c-90a18aa10c21" />
+
 The UE first scans for Synchronization Signal Blocks (SSBs) from nearby cells. The SSB is a combination of two signals and one channel:
 
 - <h6>PSS (Primary Synchronization Signal):</h6> Helps the device get coarse time and frequency synchronization and determines the cell's Physical Cell ID (PCI) Group.
@@ -440,6 +453,8 @@ Once the device has the necessary system information, it begins the Random Acces
 # Random Access Procedure
 The Random Access procedure is the method a device uses to establish a connection with the network. It is triggered by several events, such as when a device has uplink data to send, when it needs to re-sync with the network, or during a handover. The procedure can be either contention-based or contention-free.
 
+<img width="1261" height="585" alt="Screenshot (502)" src="https://github.com/user-attachments/assets/4f581999-7b4b-4b71-b795-0e8c80d8a0d4" />
+
 ## Contention-Based Random Access (CBRA)
 This is the standard, four-step process used when a device does not have a dedicated preamble from the network. There's a chance that two or more devices might try to access the network at the same time, which can cause a "contention" or collision.
 
@@ -464,6 +479,9 @@ This is a simpler, two-step process used to avoid collisions. The network explic
 In a 5G network, there are various types of identifiers, which can be divided into two main categories: Device Identity and Subscription Identity.
 
 ## 1. Permanent Equipment Identifier (PEI)
+
+<img width="1275" height="689" alt="Screenshot (463)" src="https://github.com/user-attachments/assets/8232267d-eb1c-4a23-9297-a931997539b8" />
+
 - This is a permanent ID for each User Equipment (UE) or device.
 
 - It can be sent in the network as the International Mobile station Equipment Identity (IMEI) or International Mobile station Equipment Identity and Software Version Number (IMEISV).
@@ -472,6 +490,8 @@ In a 5G network, there are various types of identifiers, which can be divided in
 
 ## 2. Subscription Permanent Identity (SUPI)
 This is a permanent ID for a user's subscription.An example of this is the International Mobile Subscriber Identity (IMSI).
+
+<img width="1384" height="739" alt="Screenshot (464)" src="https://github.com/user-attachments/assets/201b1cb7-1aa2-4ca8-937a-62e06013bf06" />
 
 The IMSI can be 15 or 16 digits long and has three parts:
 
@@ -486,12 +506,16 @@ The SUPI can also be represented as a Network Access Identifier (NAI), which is 
 ## 3. Subscription Concealed Identity (SUCI)
 The SUCI is a temporary ID used to protect the SUPI when it's being sent in the network.
 
+<img width="1315" height="652" alt="Screenshot (465)" src="https://github.com/user-attachments/assets/7ca4c63f-8bbd-4c79-a979-1325f5076374" />
+
 - Its main purpose is to prevent security issues like IMSI Catching.
 
 - When the SUPI is transmitted in the network, the SUCI is used to conceal its original form.
 
 ## 4. Globally Unique Temporary Identifier (GUTI)
 The GUTI is a temporary ID that the network assigns to the user's device.Its purpose is to enhance security and prevent permanent IDs like the SUPI or SUCI from being sent over the network unnecessarily.
+
+<img width="1303" height="700" alt="Screenshot (466)" src="https://github.com/user-attachments/assets/b8f1e88f-8ef0-4a75-8e20-d582b98f3a36" />
 
 The GUTI is divided into two parts:
 
@@ -525,11 +549,17 @@ Its main functions are:
 ### 1. Registration Management</h6>
 When a device connects to the 5G network for the first time, it has to complete a Registration Procedure.The AMF manages this procedure, which involves authenticating (identifying) and authorizing (granting access to) the device with the network. This process creates the user's context within the network.
 
+<img width="1351" height="761" alt="Screenshot (480)" src="https://github.com/user-attachments/assets/a4ed72fd-7667-49a5-9eb4-205bd4f40a49" />
+
 ### 2. Connection Management
 The AMF establishes and releases the control plane signaling connections between the device and the core network. This connection is created through Radio Resource Control (RRC) and Non-Access Stratum (NAS) signaling.
 
+<img width="1374" height="592" alt="Screenshot (481)" src="https://github.com/user-attachments/assets/6e212483-ac92-432c-a01c-656b9d0a7cfc" />
+
 ### 3. Mobility Management
 The AMF manages the location tracking and handover (moving from one cell to another) of connected devices. If a device moves from one cell to another, the AMF handles its mobility to ensure its data connection remains active.
+
+<img width="1392" height="600" alt="Screenshot (484)" src="https://github.com/user-attachments/assets/4cde9a31-8364-4ed6-bae9-6f62e3fbfd0c" />
 
 # Session Management Function (SMF)
 The Session Management Function (SMF) is a core network function in the 5G system. It is responsible for all aspects of PDU Session Management. The SMF controls the user plane function (UPF) and handles the signalling related to data sessions.
@@ -537,11 +567,15 @@ The Session Management Function (SMF) is a core network function in the 5G syste
 #### Key Responsibilities of the SMF
 - <h6>PDU Session Establishment, Modification, and Release:</h6> The SMF sets up, changes, and tears down PDU Sessions. A PDU Session is a logical connection that provides data services (like internet access) between the user equipment (UE) and a Data Network (DN).
 
+<img width="1367" height="684" alt="Screenshot (487)" src="https://github.com/user-attachments/assets/23330364-65e0-4a7f-8fcd-a9c2b758413f" />
+
 - <h6>IP Address Allocation:</h6> The SMF is in charge of assigning an IP Address to the device (UE) for each PDU Session. It can allocate IPv4, IPv6, or dual-stack (both) addresses.
 
 - <h6>UPF Selection and Control:</h6> The SMF selects the appropriate User Plane Function (UPF) for the session and controls its data path.
 
 - <h6>Session Continuity Management:</h6> The SMF manages how a session remains active when a device moves. The document mentions Session Continuity Modes (SSC Modes):
+
+<img width="1351" height="749" alt="Screenshot (493)" src="https://github.com/user-attachments/assets/49435afb-d0fd-4b5e-b64e-7a014f70e226" />
 
   -  SSC Mode 1: This is a "break-before-make" approach. When the device moves to a new location that requires a different anchor point, the old PDU Session is released, and a new one is set up with a new IP address.
 
@@ -551,6 +585,9 @@ The SMF works closely with the AMF (Access and Mobility Management Function) to 
 
 # Unified Data Repository (UDR)
 The UDR is a database where various types of data are stored. It serves as a central repository for different types of information, including:
+
+<img width="1359" height="635" alt="Screenshot (495)" src="https://github.com/user-attachments/assets/f9db937c-9734-461d-b818-924e62327b0e" />
+
 
 - <h6>Subscription Data:</h6> Information about the user's subscription.
 
@@ -565,6 +602,9 @@ The design is described as cloud-native and stateless.
 # Unified Data Management (UDM)
 The UDM functions as the front-end for the user subscription data that is stored in the UDR. Its main responsibilities include:
 
+<img width="1259" height="710" alt="Screenshot (496)" src="https://github.com/user-attachments/assets/96969c6b-d684-4b49-9d70-1e3e74dd6cc7" />
+
+
 - Supporting application logic.
 
 - Managing access and registration.
@@ -575,6 +615,8 @@ In essence, the UDR stores the data, while the UDM provides the logic and servic
 
 # User Plane Function (UPF)
 The User Plane Function (UPF) is a core component of the 5G Core network. Its primary role is to handle all user data traffic, acting as a crucial bridge between your device (known as the UE, or User Equipment) and external networks like the internet.
+
+<img width="1367" height="730" alt="Screenshot (498)" src="https://github.com/user-attachments/assets/838ef98a-290b-428f-9e08-e9f5b471943c" />
 
 A key function of the UPF is to conceal your device's movement from these external networks. This ensures that even as you move and hand off between different cell towers, your connection remains stable and seamless
 
@@ -599,6 +641,8 @@ The UPF uses the Packet Forwarding Control Protocol (PFCP) for session managemen
 
 # Policy Control Function (PCF)
 The Policy Control Function (PCF) is a core component of the 5G network that sets and enforces rules for user behavior, data sessions, and network traffic. It acts as the central brain for policy decisions.
+
+<img width="1356" height="546" alt="Screenshot (499)" src="https://github.com/user-attachments/assets/72869517-3ab6-4e05-9610-a962970d756c" />
 
 #### Key Policy Types
 The PCF manages two main types of policies:
