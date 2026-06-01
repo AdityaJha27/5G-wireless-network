@@ -30,6 +30,12 @@ This project is a valuable resource for anyone who wants to gain a deeper unders
 - [Unified Data Management (UDM)](#unified-data-management-udm)
 - [User Plane Function (UPF)](#user-plane-function-upf)
 - [Policy Control Function (PCF)](#policy-control-function-pcf)
+- [5G Core Network Call Flows](#5g-core-network-call-flows)
+- [5G Registration Call Flow](#5g-registration-call-flow)
+- [5G Deregistration Call Flow](#5g-deregistration-call-flow)
+- [5G PDU Session Establishment Call Flow](#5g-pdu-session-establishment-call-flow)
+- [5G Evolution and Future Trends](#5g-evolution-and-future-trends)
+- [Conclusion](#conclusion)
 
 # The 5G System
 - ### Global Standardization Effort:
@@ -663,7 +669,475 @@ The PCF manages two main types of policies:
 
 
 
+# 5G Core Network Call Flows
 
+This section explains three important procedures of the 5G Core Network:
+
+* 5G Registration Call Flow
+* 5G Deregistration Call Flow
+* 5G PDU Session Establishment Call Flow
+
+These procedures are essential for subscriber authentication, mobility management, session creation, and service connectivity in a 5G Standalone (SA) network.
+
+# 5G Registration Call Flow
+
+The Registration Procedure is one of the most important control-plane procedures in the 5G Core Network. It allows a User Equipment (UE) to authenticate itself, establish a secure connection, retrieve subscription information, and become reachable for network services.
+
+The registration procedure can be triggered in several situations:
+
+* Initial Registration
+* Periodic Registration Update
+* Mobility Registration Update
+* Emergency Registration
+
+<img width="1721" height="1015" alt="5G Registration Call Flow" src="https://github.com/user-attachments/assets/88205050-f351-4416-8f77-839b2498802f" />
+
+## Registration Procedure Steps
+
+### Step 1: Registration Request
+
+The UE sends a Registration Request message through the gNB (RAN) to the AMF.
+
+Information included:
+
+* SUCI (Subscription Concealed Identifier)
+* GUTI (Globally Unique Temporary Identifier)
+* Registration Type
+
+The selected AMF becomes responsible for processing the registration.
+
+### Step 2: UE Context Transfer
+
+If the UE was previously attached to another AMF:
+
+* New AMF contacts the Old AMF
+* Retrieves UE Context
+* Retrieves Security Context
+* Retrieves Mobility Information
+
+This avoids performing a complete registration from scratch.
+
+### Step 3: Authentication and Security Setup
+
+The AMF starts subscriber authentication.
+
+Communication Flow:
+
+AMF → AUSF → UDM
+
+During this process:
+
+* Subscriber credentials are verified
+* Authentication vectors are generated
+* Security keys are derived
+* NAS security is established
+
+This ensures that only legitimate subscribers can access the network.
+
+### Step 4: Context Transfer Completion
+
+After successful authentication:
+
+* UE context transfer is completed
+* New AMF becomes the serving AMF
+
+### Step 5: Subscription Data Retrieval
+
+The AMF communicates with the UDM to:
+
+* Register UE context
+* Retrieve subscription information
+* Obtain slice information
+* Subscribe for future updates
+
+If an old AMF exists:
+
+* Deregistration notification is sent
+* Previous subscriptions are removed
+
+### Step 6: Policy Association
+
+The AMF creates an AM Policy Association with the PCF.
+
+Policies may include:
+
+* Mobility restrictions
+* Access control policies
+* Network slice policies
+
+### Step 7: Session Context Update
+
+The AMF updates the SMF regarding the new registration status.
+
+This ensures that active PDU sessions remain synchronized with the subscriber context.
+
+### Step 8: Registration Accept
+
+The AMF sends a Registration Accept message to the UE.
+
+The UE responds with:
+
+**Registration Complete**
+
+At this stage:
+
+* Registration succeeds
+* Mobility management becomes active
+* Network services become available
+
+### Registration Outcome
+
+* Subscriber Authenticated
+* Security Established
+* Subscription Data Retrieved
+* Policy Association Created
+* UE Successfully Registered
+
+---
+
+# 5G Deregistration Call Flow
+
+The Deregistration Procedure is used when a UE disconnects from the network or when the network decides to remove the UE registration context.
+
+This procedure releases resources and removes subscriber information from the network.
+
+<img width="1797" height="977" alt="5G Deregistration Call Flow" src="https://github.com/user-attachments/assets/a908a1cb-4852-40ed-8b88-c7b6251aceb3" />
+
+## Deregistration Procedure Steps
+
+### Step 1: Deregistration Request
+
+The UE sends a Deregistration Request to the AMF.
+
+Possible reasons include:
+
+* Device Power Off
+* SIM Removal
+* Subscription Restrictions
+* Network Initiated Deregistration
+
+### Step 2: Session Release Procedure
+
+The AMF instructs the SMF to release active PDU sessions.
+
+The SMF performs:
+
+* SM Context Release
+* N4 Session Release
+* UPF Cleanup
+
+Result:
+
+* User plane tunnels removed
+* Data forwarding stopped
+
+### Step 3: Policy Removal
+
+The SMF removes session-related policies from the PCF.
+
+Examples:
+
+* QoS Policies
+* Charging Policies
+* Traffic Steering Rules
+
+### Step 4: UE Policy Removal
+
+The AMF removes UE-related policy associations.
+
+Removed policies include:
+
+* Mobility Policies
+* Access Policies
+* Slice Policies
+
+### Step 5: Deregistration Accept
+
+After successful cleanup:
+
+AMF sends Deregistration Accept to the UE.
+
+The subscriber context is removed from the registration database.
+
+### Step 6: Access Network Release
+
+The RAN releases radio resources.
+
+Operations include:
+
+* RRC Connection Release
+* Context Cleanup
+* Resource Deallocation
+
+### Deregistration Outcome
+
+* PDU Sessions Released
+* Policies Removed
+* User Plane Resources Released
+* Registration Context Deleted
+* UE Disconnected from the Network
+
+---
+
+# 5G PDU Session Establishment Call Flow
+
+A PDU Session provides connectivity between the UE and a Data Network (DN) such as the Internet, enterprise network, or private cloud.
+
+The Session Management Function (SMF) is primarily responsible for creating and managing these sessions.
+
+<img width="1786" height="986" alt="5G PDU Session Establishment Call Flow" src="https://github.com/user-attachments/assets/5eefe202-2584-444b-bdf2-1ba38de1f054" />
+
+## PDU Session Establishment Steps
+
+### Step 1: PDU Session Establishment Request
+
+The UE initiates a PDU Session Establishment Request.
+
+The AMF:
+
+* Receives the request
+* Selects an appropriate SMF
+
+### Step 2: SM Context Creation
+
+The AMF forwards the request to the SMF.
+
+The SMF:
+
+* Creates SM Context
+* Retrieves subscription information from UDM
+* Subscribes for future updates
+
+### Step 3: Authentication and Authorization
+
+The SMF validates:
+
+* Subscriber permissions
+* Requested services
+* Allowed network slices
+* QoS requirements
+
+Only authorized sessions are allowed to proceed.
+
+### Step 4: PCF and UPF Selection
+
+#### PCF Selection
+
+The SMF creates a policy association with the PCF.
+
+Policy information includes:
+
+* QoS Profiles
+* Charging Rules
+* Traffic Management Rules
+
+#### UPF Selection
+
+The SMF selects an appropriate UPF.
+
+The selected UPF becomes the user-plane anchor for the session.
+
+### Step 5: N4 Session Establishment
+
+The SMF establishes an N4 session with the UPF.
+
+PFCP rules are installed:
+
+* PDR (Packet Detection Rules)
+* FAR (Forwarding Action Rules)
+* QER (QoS Enforcement Rules)
+* URR (Usage Reporting Rules)
+
+This creates the complete user-plane path.
+
+### Step 6: Radio Resource Setup
+
+The AMF instructs the RAN to establish radio resources.
+
+The RAN:
+
+* Configures RRC Parameters
+* Creates User Plane Bearers
+* Allocates Radio Resources
+
+### Step 7: User Plane Activation
+
+The complete data path becomes active:
+
+UE → gNB → UPF → Data Network
+
+User traffic can now flow between the subscriber and the external network.
+
+### Step 8: Context Update
+
+The AMF updates subscriber information in the UDM.
+
+Stored information includes:
+
+* Active Session Information
+* Mobility Information
+* Session Context Information
+
+### PDU Session Establishment Outcome
+
+* PDU Session Established
+* IP Address Allocated
+* UPF Selected and Configured
+* QoS Policies Applied
+* User Plane Activated
+* Internet Connectivity Available
+
+# 5G Evolution and Future Trends
+
+The evolution of 5G networks is extending beyond traditional mobile connectivity. Modern 5G systems are increasingly integrating Artificial Intelligence (AI), Machine Learning (ML), network automation, and advanced communication technologies to improve performance, efficiency, and user experience.
+
+As 5G deployments continue to mature worldwide, the industry is moving toward **5G-Advanced** and eventually **6G**, enabling smarter, faster, and more intelligent networks.
+
+## AI and Machine Learning in 5G Networks
+
+Artificial Intelligence and Machine Learning are becoming key components of modern telecom networks.
+
+### Intelligent Network Optimization
+
+AI can analyze network traffic patterns and automatically optimize:
+
+* Resource allocation
+* Load balancing
+* Network slicing
+* Congestion management
+
+This helps operators improve network performance while reducing operational costs.
+
+### Predictive Maintenance
+
+Machine Learning models can identify potential network failures before they occur.
+
+Benefits include:
+
+* Reduced downtime
+* Faster fault detection
+* Improved network reliability
+
+### Smart Mobility Management
+
+AI-powered analytics can predict user movement and mobility patterns.
+
+This enables:
+
+* Faster handovers
+* Reduced latency
+* Better mobility management
+* Improved user experience
+
+### Intelligent Security
+
+AI-based security systems can detect:
+
+* Abnormal traffic behavior
+* Network attacks
+* Unauthorized access attempts
+
+This improves overall network protection and network resilience.
+
+---
+
+## 5G-Advanced
+
+5G-Advanced represents the next phase of 5G evolution and introduces several enhancements over current deployments.
+
+Key improvements include:
+
+* AI-native network operations
+* Enhanced Massive MIMO performance
+* Improved energy efficiency
+* Extended Reality (XR) support
+* Advanced network automation
+* Enhanced satellite connectivity
+
+These enhancements help support future applications such as smart cities, industrial automation, autonomous systems, and immersive digital experiences.
+
+---
+
+## Future Technologies Beyond 5G
+
+Several emerging technologies are expected to shape the future of wireless communication.
+
+### Non-Terrestrial Networks (NTN)
+
+Integration of:
+
+* Satellites
+* High-altitude platforms
+* Aerial communication systems
+
+This enables connectivity in remote and underserved regions.
+
+### Reconfigurable Intelligent Surfaces (RIS)
+
+RIS technology can intelligently control radio signal propagation.
+
+Benefits include:
+
+* Better coverage
+* Improved signal quality
+* Reduced interference
+
+### Integrated Sensing and Communication (ISAC)
+
+Future networks may combine communication and sensing capabilities within the same infrastructure.
+
+Applications include:
+
+* Autonomous vehicles
+* Smart transportation
+* Industrial automation
+* Smart manufacturing
+
+### Digital Twins for Networks
+
+AI-driven digital replicas of real networks can be used for:
+
+* Performance simulation
+* Fault prediction
+* Capacity planning
+* Network optimization
+
+before deploying changes into production environments.
+
+---
+
+## Towards 6G
+
+The telecommunications industry has already started researching 6G technologies.
+
+Expected capabilities include:
+
+* Data rates up to 1 Tbps
+* Ultra-low latency communication
+* AI-native network architecture
+* Massive device connectivity
+* Advanced holographic communication
+* Integrated terrestrial and satellite networks
+
+6G aims to create fully intelligent and autonomous communication systems capable of supporting future digital ecosystems.
+
+---
+
+## Key Takeaways
+
+* AI and ML are transforming network management and optimization.
+* 5G-Advanced introduces smarter and more efficient network capabilities.
+* Emerging technologies such as RIS, NTN, and ISAC will enhance future wireless systems.
+* 6G will focus on AI-native architectures, ultra-high speeds, and intelligent connectivity.
+* The future of mobile communication is moving toward fully automated and self-optimizing networks.
+
+---
+
+## Conclusion
+
+The Registration, Deregistration, and PDU Session Establishment procedures form the foundation of subscriber management and connectivity in the 5G Core Network. These procedures ensure secure authentication, efficient mobility management, proper resource allocation, and seamless access to data services.
+
+As 5G technology continues to evolve toward 5G-Advanced and 6G, the integration of Artificial Intelligence, Machine Learning, network automation, and advanced communication technologies will play a critical role in building intelligent, scalable, and highly efficient networks. The future of wireless communication is expected to deliver faster connectivity, smarter network operations, and enhanced user experiences across a wide range of applications and industries.
 
 
 
